@@ -93,8 +93,20 @@
             const formData = new FormData(contactForm);
             const data = Object.fromEntries(formData);
             
-            // Here you would normally send the data to a server
-            console.log('Form submitted:', data);
+            // Create WhatsApp message
+            const message = `Hello! I'd like to request a cleaning service.\n\n` +
+                `Name: ${data.name}\n` +
+                `Phone: ${data.phone}\n` +
+                `Email: ${data.email}\n` +
+                `Service Type: ${data.service}\n` +
+                `Message: ${data.message || 'N/A'}`;
+            
+            // WhatsApp number (format: country code + number without spaces)
+            const whatsappNumber = '27820747923';
+            const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+            
+            // Open WhatsApp
+            window.open(whatsappURL, '_blank');
             
             // Show success toast
             showToast();
@@ -103,6 +115,34 @@
             contactForm.reset();
         });
     }
+
+    // ========================================
+    // Pricing Get Quote Buttons
+    // ========================================
+    const getQuoteBtns = document.querySelectorAll('.get-quote-btn');
+    
+    getQuoteBtns.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Get service and price from parent pricing card
+            const card = this.closest('.pricing-card');
+            const service = card.getAttribute('data-service');
+            const price = card.getAttribute('data-price');
+            
+            // Create WhatsApp message
+            const message = `Hello! I'm interested in getting a quote for:\n\n` +
+                `Service: ${service}\n` +
+                `Pricing: ${price}`;
+            
+            // WhatsApp number
+            const whatsappNumber = '27820747923';
+            const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+            
+            // Open WhatsApp
+            window.open(whatsappURL, '_blank');
+        });
+    });
 
     // ========================================
     // Scroll Animations (Intersection Observer)
